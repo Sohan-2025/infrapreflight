@@ -37,3 +37,8 @@ Thumbs.db
 .env.*
 *.pem
 *.key
+
+# InfraPreflight generated analysis
+risk_report.json
+stage4_input.json
+analysis.json

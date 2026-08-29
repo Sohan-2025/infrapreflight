@@ -1,0 +1,8 @@
+{
+  "mappings": [
+    {
+      "terraform_resource": "local_file.application",
+      "service": "reporting-api"
+    }
+  ]
+}

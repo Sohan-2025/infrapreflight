@@ -1,0 +1,14 @@
+{
+  "dependencies": [
+    {
+      "source": "aws_iam_policy.reporting",
+      "target": "reporting-api",
+      "relation": "authorizes"
+    },
+    {
+      "source": "reporting-api",
+      "target": "reporting-db",
+      "relation": "calls"
+    }
+  ]
+}

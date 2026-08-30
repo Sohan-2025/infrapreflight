@@ -1,0 +1,14 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Docker
+*.log
+
+# Generated evidence output (regenerated per run, not source)
+evidence/*.json
+
+# OS junk
+.DS_Store

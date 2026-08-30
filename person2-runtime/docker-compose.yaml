@@ -1,0 +1,44 @@
+name: infrapreflight-sandbox
+
+networks:
+  infrapreflight-net:
+    driver: bridge
+
+services:
+  localstack:
+    image: localstack/localstack:3.7
+    container_name: infrapreflight-localstack
+    ports:
+      - "4566:4566"
+    environment:
+      - SERVICES=s3
+      - DEBUG=1
+    volumes:
+      - "./localstack-init:/etc/localstack/init/ready.d"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    networks:
+      - infrapreflight-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4566/_localstack/health"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  reporting-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: infrapreflight-reporting-api
+    depends_on:
+      localstack:
+        condition: service_healthy
+    environment:
+      - IAM_POLICY_STATE=${IAM_POLICY_STATE:-allow}
+      - AWS_ENDPOINT_URL=http://localstack:4566
+      - AWS_REGION=us-east-1
+      - DB_BUCKET=reporting-db-bucket
+      - DB_OBJECT_KEY=report.json
+    ports:
+      - "8080:8080"
+    networks:
+      - infrapreflight-net
